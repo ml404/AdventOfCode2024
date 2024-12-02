@@ -23,9 +23,14 @@ fun main() {
     }
 
     val distance = calculateDistance(list1, list2)
-    println("Total distance is: '$distance'")
+    val similarity = calculateSimilarity(list1, list2)
+    println("Total distance is: '$distance', Similarity is: '$similarity' ")
 }
 
 fun calculateDistance(list1: List<Int>, list2: List<Int>): Int {
     return (list1.sorted() zip list2.sorted()).map { abs(it.first - it.second) }.sum()
+}
+
+fun calculateSimilarity(list1: List<Int>, list2: List<Int>) : Int{
+    return list1.map { left -> left * list2.filter { it == left }.size }.sum()
 }
