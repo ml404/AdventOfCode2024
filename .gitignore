@@ -45,4 +45,5 @@ bin/
 .DS_Store
 
 ### My inputs for the code challenges ###
-src/main/resources/**
+src/main/resources/*
+!src/main/resources/.gitkeep
