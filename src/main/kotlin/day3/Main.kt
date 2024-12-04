@@ -3,8 +3,7 @@ package day3
 import helper.readFilePathToString
 
 val part1Regex = "mul\\(\\d{1,3},\\d{1,3}\\)".toRegex()
-val part2Regex = "do\\(\\)(.*?mul\\(\\d{1,3},\\d{1,3}\\))+".toRegex()
-val part2RegexNegative = "(?<=don't\\(\\)).*?mul\\(\\d{1,3},\\d{1,3}\\)(?=[^m]*do\\(\\)|\$)".toRegex()
+val part2Regex = "(?<=don't\\(\\)).*?mul\\(\\d{1,3},\\d{1,3}\\)(?=[^m]*do\\(\\)|\$)".toRegex()
 
 fun main() {
 
@@ -15,10 +14,11 @@ fun main() {
     val dontsInString = extractMulsToIgnore(fileString)
 
     val result = mulsFromString.filterNot { it in dontsInString }
-    val total = splitAndMultiplyList(result)
+    val part1Total = splitAndMultiplyList(mulsFromString)
+    val part2Total = splitAndMultiplyList(result)
 
-
-    println("Total is: $total")
+    println("Part 1 Total is: $part1Total")
+    println("Part 2 Total is: $part2Total")
 
 }
 
@@ -38,6 +38,6 @@ fun Regex.extractMulsFromString(input: String): List<String> =
     this.findAll(input).toList().map { it.value }.map { it.replace("mul(", "").replace(")", "") }
 
 fun extractNegativeMulsFromString(input: String): List<String> {
-   return part2RegexNegative.findAll(input).toList().map { it.value }
+   return part2Regex.findAll(input).toList().map { it.value }
 }
 
