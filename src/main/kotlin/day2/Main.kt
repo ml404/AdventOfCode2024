@@ -1,8 +1,7 @@
 package day2
 
-import java.io.File
+import helper.readFilePathToListOfLists
 import kotlin.math.abs
-import kotlin.sequences.forEach
 
 
 fun main() {
@@ -16,16 +15,6 @@ fun main() {
 }
 
 
-private fun readFilePathToListOfLists(filePath: String): List<List<Int>> = File(filePath).useLines { lines ->
-    val result = mutableListOf<List<Int>>()
-
-    lines.forEach { line ->
-        val output = line.split(" ").map { it.toInt() }
-        result.add(output)
-
-    }
-    return result.toList()
-}
 
 fun validateReportWithDampener(input: List<Int>): Boolean {
     for ((index, _) in input.withIndex()) {
