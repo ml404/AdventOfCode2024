@@ -26,4 +26,4 @@ fun readFilePathToListOfLists(filePath: String): List<List<Int>> = File(filePath
     return result.toList()
 }
 
-fun readFilePathToString(filePath: String): String = File(filePath).readText()
+fun filePathToList(filePath: String): List<String> = File(filePath).readLines()

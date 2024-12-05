@@ -1,21 +1,20 @@
 package day3
 
-import helper.readFilePathToString
+import helper.filePathToList
 
-val part1Regex = "mul\\(\\d{1,3},\\d{1,3}\\)".toRegex()
-val part2Regex = "(?<=don't\\(\\)).*?mul\\(\\d{1,3},\\d{1,3}\\)(?=[^m]*do\\(\\)|\$)".toRegex()
+val part1Regex = "mul\\(\\d{1,3},\\d{1,3}\\)".toRegex(RegexOption.DOT_MATCHES_ALL)
+val part2Regex = "(mul\\(\\d{1,3},\\d{1,3}\\))|(do\\(\\))|(don't\\(\\))".toRegex(RegexOption.DOT_MATCHES_ALL)
 
 fun main() {
 
     val filePath = object {}.javaClass.classLoader.getResource("day3.txt")?.path
         ?: throw IllegalArgumentException("File not found in resources folder")
-    val fileString = readFilePathToString(filePath)
-    val mulsFromString = part1Regex.extractMulsFromString(fileString)
-    val dontsInString = extractMulsToIgnore(fileString)
+    val fileString = filePathToList(filePath)
+    val mulsFromString = extractMulsFromString(fileString)
+    val part2mulsFromString = extractDosAndDontsMulsFromString(fileString)
 
-    val result = mulsFromString.filterNot { it in dontsInString }
     val part1Total = splitAndMultiplyList(mulsFromString)
-    val part2Total = splitAndMultiplyList(result)
+    val part2Total = splitAndMultiplyListWithDos(part2mulsFromString)
 
     println("Part 1 Total is: $part1Total")
     println("Part 2 Total is: $part2Total")
@@ -30,14 +29,38 @@ fun splitAndMultiplyList(result: List<String>): Int {
     return total
 }
 
-fun extractMulsToIgnore(fileString: String): List<String> = extractNegativeMulsFromString(fileString).flatMap {
-    part1Regex.findAll(it).toList().map { it.value.replace("mul(", "").replace(")", "") }
+fun splitAndMultiplyListWithDos(result: List<String>): Int {
+    var mul = true
+    return result.sumOf {
+        part2Regex.findAll(it)
+            .map {
+                when (it.value) {
+                    "do()" -> {
+                        mul = true
+                        0
+                    }
+                    "don't()" -> {
+                        mul = false
+                        0
+                    }
+                    else -> {
+                        if (mul) {
+                            val (a, b) = it.value.split(",").map { it.replace("mul(", "").replace(")", "").toInt() }
+                            a * b
+                        } else {
+                            0
+                        }
+                    }
+                }
+            }.sum()
+    }
 }
 
-fun Regex.extractMulsFromString(input: String): List<String> =
-    this.findAll(input).toList().map { it.value }.map { it.replace("mul(", "").replace(")", "") }
+fun extractMulsFromString(input: List<String>): List<String> =
+    input.flatMap { part1Regex.findAll(it).map { match -> match.value.replace("mul(", "").replace(")", "") } }
 
-fun extractNegativeMulsFromString(input: String): List<String> {
-   return part2Regex.findAll(input).toList().map { it.value }
+
+fun extractDosAndDontsMulsFromString(input: List<String>): List<String> {
+   return input.flatMap { part2Regex.findAll(it).map { it.value } }
 }
 
