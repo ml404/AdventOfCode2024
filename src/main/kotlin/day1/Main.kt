@@ -1,12 +1,12 @@
 package day1
 
+import helper.getFilePath
 import helper.readFilePathToLists
 import kotlin.math.abs
 
 fun main() {
     // Load the file from the resources folder
-    val filePath = object {}.javaClass.classLoader.getResource("day1.txt")?.path ?: throw IllegalArgumentException("File not found in resources folder")
-
+    val filePath = getFilePath("day1.txt")
 
     // Read the file and process each line
     val (list1, list2) = readFilePathToLists(filePath)

@@ -27,3 +27,5 @@ fun readFilePathToListOfLists(filePath: String): List<List<Int>> = File(filePath
 }
 
 fun filePathToList(filePath: String): List<String> = File(filePath).readLines()
+
+fun getFilePath(textFile: String) = object {}.javaClass.classLoader.getResource(textFile)?.path ?: throw IllegalArgumentException("File not found in resources folder")

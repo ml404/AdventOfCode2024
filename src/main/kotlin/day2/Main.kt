@@ -1,13 +1,13 @@
 package day2
 
+import helper.getFilePath
 import helper.readFilePathToListOfLists
 import kotlin.math.abs
 
 
 fun main() {
     // Load the file from the resources folder
-    val filePath = object {}.javaClass.classLoader.getResource("day2.txt")?.path
-        ?: throw IllegalArgumentException("File not found in resources folder")
+    val filePath = getFilePath("day2.txt")
     val listOfLists = readFilePathToListOfLists(filePath)
     val numberOfValidReports = listOfLists.map { validateReport(it) }.filter { it == true }.size
     val numberOfValidReportsWithDampener = listOfLists.map { validateReportWithDampener(it) }.filter { it == true }.size

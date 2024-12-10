@@ -1,14 +1,14 @@
 package day3
 
 import helper.filePathToList
+import helper.getFilePath
 
 val part1Regex = "mul\\(\\d{1,3},\\d{1,3}\\)".toRegex(RegexOption.DOT_MATCHES_ALL)
 val part2Regex = "(mul\\(\\d{1,3},\\d{1,3}\\))|(do\\(\\))|(don't\\(\\))".toRegex(RegexOption.DOT_MATCHES_ALL)
 
 fun main() {
 
-    val filePath = object {}.javaClass.classLoader.getResource("day3.txt")?.path
-        ?: throw IllegalArgumentException("File not found in resources folder")
+    val filePath = getFilePath("day3.txt")
     val fileString = filePathToList(filePath)
     val mulsFromString = extractMulsFromString(fileString)
     val part2mulsFromString = extractDosAndDontsMulsFromString(fileString)
